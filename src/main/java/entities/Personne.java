@@ -10,7 +10,7 @@ public class Personne {
     private String phoneNumber;
     private String portableNumber;
     private Collel collel;
-    private ArrayList<Gmah> gmahEnCours = new ArrayList<Gmah>();
+
 
     public Personne(String firstName, String lastName, String adress, City city, String phoneNumber, String portableNumber, Collel collel) {
         this.firstName = firstName;
@@ -82,19 +82,5 @@ public class Personne {
         this.collel = collel;
     }
 
-    public void takeGmah(Gmah gmah) {
-        this.gmahEnCours.add(gmah);
-    }
 
-    public ArrayList<Gmah> gmahEnCours() {
-        return gmahEnCours;
-    }
-
-    public ArrayList<Gmah> getGmahEnCours() {
-        return gmahEnCours;
-    }
-
-    public void setGmahEnCours(ArrayList<Gmah> gmahEnCours) {
-        this.gmahEnCours = gmahEnCours;
-    }
 }

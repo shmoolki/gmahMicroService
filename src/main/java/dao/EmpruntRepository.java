@@ -5,12 +5,9 @@ import entities.Emprunt;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class EmpruntRepository {
+public interface EmpruntRepository {
 
-    public ArrayList<Emprunt> all(){
-        return new ArrayList<Emprunt>();
-    }
+    public ArrayList<Emprunt> all();
 
-    public void save(Emprunt emprunt) {
-    }
+    public void save(Emprunt emprunt) ;
 }
