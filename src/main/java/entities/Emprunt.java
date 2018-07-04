@@ -10,6 +10,7 @@ public class Emprunt {
     private Devise devise;
     private Date dateEmprunt;
     private Date dateRemboursement;
+    private double resteAPayer;
     private ArrayList<Arev> listArevim = new ArrayList<Arev>();
 
     public Emprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
@@ -18,6 +19,8 @@ public class Emprunt {
         this.devise = devise;
         this.dateEmprunt = dateEmprunt;
         this.dateRemboursement = dateRemboursement;
+        this.resteAPayer = amount;
+
 
     }
 
@@ -64,6 +67,11 @@ public class Emprunt {
         this.dateRemboursement = dateRemboursement;
     }
 
+    public void addArev(Arev garant) {
+        if(!this.listArevim.contains(garant))
+            this.listArevim.add(garant);
+    }
+
     @Override
     public String toString() {
         return "Emprunt{" +
@@ -72,11 +80,17 @@ public class Emprunt {
                 ", devise=" + devise +
                 ", dateEmprunt=" + dateEmprunt +
                 ", dateRemboursement=" + dateRemboursement +
+                ", resteAPayer=" + resteAPayer +
+                ", listArevim=" + listArevim +
                 '}';
     }
 
-    public void addArev(Arev garant) {
-        this.listArevim.add(garant);
+    public double getResteAPayer() {
+        return resteAPayer;
+    }
+
+    public void setResteAPayer(double resteAPayer) {
+        this.resteAPayer = resteAPayer;
     }
 
     public ArrayList<Arev> getListArevim() {
@@ -85,5 +99,9 @@ public class Emprunt {
 
     public void setListArevim(ArrayList<Arev> listArevim) {
         this.listArevim = listArevim;
+    }
+
+    public void rembourse(double amountRembourser, Devise devise, Date dateRemboursement, String comment) {
+        this.resteAPayer-= amountRembourser;
     }
 }

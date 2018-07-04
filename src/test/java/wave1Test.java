@@ -1,6 +1,7 @@
 import dao.EmpruntRepository;
 import dao.InMemoryEmpruntRepository;
 import entities.*;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -20,6 +21,12 @@ public class wave1Test {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
+
+//    @Before
+//    public void prepareDataBeforeEachTest() throws ParseException {
+//        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+//
+//    }
 
     @Test
     public void TakeaGmahTest() {
@@ -43,14 +50,31 @@ public class wave1Test {
         Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.addArev(garant);
         assertEquals(1,emprunt.getListArevim().size());
+        Arev garant2 = new Arev("Levy","David","Ok", bneiBrakCity,"1213213","45654567",bismuthCollel);
+        emprunt.addArev(garant2);
+        assertEquals(2,emprunt.getListArevim().size());
+        emprunt.addArev(garant2);
+        assertEquals(2,emprunt.getListArevim().size());
+
+    }
+
+    @Test
+    public void RembourserUnEmprunt() throws ParseException {
+        Arev garant = new Arev("Cohen","David","Birnbaum 4", bneiBrakCity,"343434","34343434",bismuthCollel);
+        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        emprunt.addArev(garant);
+
+        emprunt.rembourse(5000 , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+        assertEquals((double)5000 ,emprunt.getResteAPayer());
+
 
     }
 
 
 
 
-    private Emprunt takeEmprunt(Personne personne, double amount, Devise devise, Date DateEmprunt, Date DateRemboursement) {
-        Emprunt emprunt = new Emprunt();
+    private Emprunt takeEmprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
+        Emprunt emprunt = new Emprunt(personne,amount,devise,dateEmprunt,dateRemboursement);
         empruntRepository.save(emprunt);
         return emprunt;
     }
