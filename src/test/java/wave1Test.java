@@ -1,6 +1,7 @@
 import dao.EmpruntRepository;
 import dao.InMemoryEmpruntRepository;
 import entities.*;
+import exceptions.RemboursementImpossibleException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,19 +60,30 @@ public class wave1Test {
     }
 
     @Test
-    public void RembourserUnEmprunt() throws ParseException {
+    public void RembourserUnEmprunt() throws ParseException, RemboursementImpossibleException {
         Arev garant = new Arev("Cohen","David","Birnbaum 4", bneiBrakCity,"343434","34343434",bismuthCollel);
         Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.addArev(garant);
 
         emprunt.rembourse(5000 , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
         assertEquals((double)5000 ,emprunt.getResteAPayer());
-
+        emprunt.rembourse(5000 , euroDevise , dateFormat.parse("02/10/2018"), "Remboursement a temps");
+        assertEquals((double)0 ,emprunt.getResteAPayer());
 
     }
 
+    @Test(expected = RemboursementImpossibleException.class)
+    public void testRemboursementImpossible() throws ParseException, RemboursementImpossibleException {
+            Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+            emprunt.rembourse(10001 , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+    }
 
+    @Test
+    public shouldHandleDepot() throws ParseException{
+        Depot depot = new Depot(shmuelMouyalPersonne, 20000 , euroDevise,dateFormat.parse("01/07/2018"));
+        depotRepository depotRepository.save(depot);
 
+    }
 
     private Emprunt takeEmprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
         Emprunt emprunt = new Emprunt(personne,amount,devise,dateEmprunt,dateRemboursement);

@@ -1,10 +1,11 @@
 package entities;
 
+import exceptions.RemboursementImpossibleException;
+
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Date;
 
-public class Emprunt {
+public class Emprunt  extends  Operation{
     private Personne personne;
     private double amount;
     private Devise devise;
@@ -23,6 +24,7 @@ public class Emprunt {
 
 
     }
+
 
     public Emprunt() {
     }
@@ -101,7 +103,10 @@ public class Emprunt {
         this.listArevim = listArevim;
     }
 
-    public void rembourse(double amountRembourser, Devise devise, Date dateRemboursement, String comment) {
+    public void rembourse(double amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException {
+        if(this.resteAPayer - amountRembourser < 0){
+            throw new RemboursementImpossibleException();
+        }
         this.resteAPayer-= amountRembourser;
     }
 }
