@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Operation {
-    private Personne personne;
-    private double amount;
-    private Devise devise;
-    private Date dateOpe;
+    protected Personne personne;
+    protected double amount;
+    protected Devise devise;
+    protected Date dateOpe;
 
     public Operation(Personne personne, double amount, Devise devise, Date dateOpe) {
         this.personne = personne;

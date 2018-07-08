@@ -6,18 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Emprunt  extends  Operation{
-    private Personne personne;
-    private double amount;
-    private Devise devise;
     private Date dateEmprunt;
     private Date dateRemboursement;
     private double resteAPayer;
     private ArrayList<Arev> listArevim = new ArrayList<Arev>();
 
     public Emprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
-        this.personne = personne;
-        this.amount = amount;
-        this.devise = devise;
+        super(personne,amount,devise,dateEmprunt);
         this.dateEmprunt = dateEmprunt;
         this.dateRemboursement = dateRemboursement;
         this.resteAPayer = amount;
@@ -27,30 +22,7 @@ public class Emprunt  extends  Operation{
 
 
     public Emprunt() {
-    }
-
-    public Personne getPersonne() {
-        return personne;
-    }
-
-    public void setPersonne(Personne personne) {
-        this.personne = personne;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Devise getDevise() {
-        return devise;
-    }
-
-    public void setDevise(Devise devise) {
-        this.devise = devise;
+        super();
     }
 
     public Date getDateEmprunt() {
@@ -74,16 +46,31 @@ public class Emprunt  extends  Operation{
             this.listArevim.add(garant);
     }
 
+//    @Override
+//    public String toString() {
+//        return "Emprunt{" +
+//                "personne=" + personne +
+//                ", amount=" + amount +
+//                ", devise=" + devise +
+//                ", dateEmprunt=" + dateEmprunt +
+//                ", dateRemboursement=" + dateRemboursement +
+//                ", resteAPayer=" + resteAPayer +
+//                ", listArevim=" + listArevim +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
         return "Emprunt{" +
-                "personne=" + personne +
-                ", amount=" + amount +
-                ", devise=" + devise +
-                ", dateEmprunt=" + dateEmprunt +
+                "dateEmprunt=" + dateEmprunt +
                 ", dateRemboursement=" + dateRemboursement +
                 ", resteAPayer=" + resteAPayer +
                 ", listArevim=" + listArevim +
+                ", personne=" + personne +
+                ", amount=" + amount +
+                ", devise=" + devise +
+                ", dateOpe=" + dateOpe +
                 '}';
     }
 

@@ -1,4 +1,6 @@
+import dao.DepotRepository;
 import dao.EmpruntRepository;
+import dao.InMemoryDepotRepository;
 import dao.InMemoryEmpruntRepository;
 import entities.*;
 import exceptions.RemboursementImpossibleException;
@@ -22,6 +24,7 @@ public class wave1Test {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
+    private DepotRepository depotRepository = new InMemoryDepotRepository();
 
 //    @Before
 //    public void prepareDataBeforeEachTest() throws ParseException {
@@ -79,9 +82,10 @@ public class wave1Test {
     }
 
     @Test
-    public shouldHandleDepot() throws ParseException{
-        Depot depot = new Depot(shmuelMouyalPersonne, 20000 , euroDevise,dateFormat.parse("01/07/2018"));
-        depotRepository depotRepository.save(depot);
+    public void shouldHandleDepot() throws ParseException{
+        Depot depot = new Depot( shmuelMouyalPersonne,20000,euroDevise, dateFormat.parse("01/07/2018"));
+        depotRepository.save(depot);
+        assertEquals(20000, shmuelMouyalPersonne.getAccount().getDepotAmount());
 
     }
 
