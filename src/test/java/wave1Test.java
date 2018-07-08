@@ -4,9 +4,9 @@ import dao.InMemoryDepotRepository;
 import dao.InMemoryEmpruntRepository;
 import entities.*;
 import exceptions.RemboursementImpossibleException;
-import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,32 +26,28 @@ public class wave1Test {
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
     private DepotRepository depotRepository = new InMemoryDepotRepository();
 
-//    @Before
-//    public void prepareDataBeforeEachTest() throws ParseException {
-//        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
-//
-//    }
 
     @Test
     public void TakeaGmahTest() {
-         shmuelMouyalPersonne.takeGmah(new Gmah("נויבריט", "רחוב ראב״ד", bneiBrakCity, "03333333"));
+        shmuelMouyalPersonne.takeGmah(new Gmah("נויבריט", "רחוב ראב״ד", bneiBrakCity, "03333333"));
         assertEquals(shmuelMouyalPersonne.getGmahEnCours().size(), 1);
     }
 
     @Test
     public void listGmahTaken() throws ParseException {
-        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         assertThat(empruntRepository.all(), hasItem(emprunt));
-        Emprunt emp2 = takeEmprunt(shmuelMouyalPersonne,15000,euroDevise,dateFormat.parse("02/05/2017"), dateFormat.parse("02/08/2017") );
+        Emprunt emp2 = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(15000),euroDevise,dateFormat.parse("02/05/2017"), dateFormat.parse("02/08/2017") );
         assertThat(empruntRepository.all(), hasItem(emp2));
         assertEquals(2,empruntRepository.all().size());
+        assertEquals(BigDecimal.valueOf(25000),shmuelMouyalPersonne.getAccount().getEmpruntAmount());
     }
 
 
     @Test
     public void garantHandle() throws ParseException {
         Arev garant = new Arev("Cohen","David","Birnbaum 4", bneiBrakCity,"343434","34343434",bismuthCollel);
-        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.addArev(garant);
         assertEquals(1,emprunt.getListArevim().size());
         Arev garant2 = new Arev("Levy","David","Ok", bneiBrakCity,"1213213","45654567",bismuthCollel);
@@ -65,34 +61,49 @@ public class wave1Test {
     @Test
     public void RembourserUnEmprunt() throws ParseException, RemboursementImpossibleException {
         Arev garant = new Arev("Cohen","David","Birnbaum 4", bneiBrakCity,"343434","34343434",bismuthCollel);
-        Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.addArev(garant);
 
-        emprunt.rembourse(5000 , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
-        assertEquals((double)5000 ,emprunt.getResteAPayer());
-        emprunt.rembourse(5000 , euroDevise , dateFormat.parse("02/10/2018"), "Remboursement a temps");
-        assertEquals((double)0 ,emprunt.getResteAPayer());
+        emprunt.rembourse(BigDecimal.valueOf(5000) , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+        assertEquals(BigDecimal.valueOf(5000) ,emprunt.getResteAPayer());
+        emprunt.rembourse(BigDecimal.valueOf(5000), euroDevise , dateFormat.parse("02/10/2018"), "Remboursement a temps");
+        assertEquals(BigDecimal.ZERO,emprunt.getResteAPayer());
 
     }
 
     @Test(expected = RemboursementImpossibleException.class)
     public void testRemboursementImpossible() throws ParseException, RemboursementImpossibleException {
-            Emprunt emprunt = takeEmprunt(shmuelMouyalPersonne, 10000, euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
-            emprunt.rembourse(10001 , euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+            Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+            emprunt.rembourse(BigDecimal.valueOf(10001), euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
     }
 
     @Test
     public void shouldHandleDepot() throws ParseException{
-        Depot depot = new Depot( shmuelMouyalPersonne,20000,euroDevise, dateFormat.parse("01/07/2018"));
-        depotRepository.save(depot);
-        assertEquals(20000, shmuelMouyalPersonne.getAccount().getDepotAmount());
+        deposer(shmuelMouyalPersonne, BigDecimal.valueOf(20000), euroDevise, dateFormat.parse("01/07/2018"));
+        assertEquals(BigDecimal.valueOf(20000), shmuelMouyalPersonne.getAccount().getDepotAmount());
+        deposer(shmuelMouyalPersonne, BigDecimal.valueOf(25000), euroDevise, dateFormat.parse("01/08/2018"));
+        assertEquals(BigDecimal.valueOf(45000), shmuelMouyalPersonne.getAccount().getDepotAmount());
 
     }
 
-    private Emprunt takeEmprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
-        Emprunt emprunt = new Emprunt(personne,amount,devise,dateEmprunt,dateRemboursement);
+    @Test
+    public void shouldHandleRetrait() throws  ParseException{
+
+
+
+    }
+
+    private Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
+        Emprunt emprunt = new Emprunt(amount,devise,dateEmprunt,dateRemboursement);
+        personne.emprunte(emprunt);
         empruntRepository.save(emprunt);
         return emprunt;
+    }
+
+    private  void deposer(Personne personne,BigDecimal amount,Devise euroDevise, Date dateDepot) throws ParseException {
+        Depot depot = new Depot( amount,euroDevise, dateDepot);
+        shmuelMouyalPersonne.depose(depot);
+        depotRepository.save(depot);
     }
 
 

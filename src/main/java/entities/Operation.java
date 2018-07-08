@@ -2,17 +2,17 @@ package entities;
 
 import exceptions.RemboursementImpossibleException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Operation {
-    protected Personne personne;
-    protected double amount;
+    protected BigDecimal amount;
     protected Devise devise;
     protected Date dateOpe;
 
-    public Operation(Personne personne, double amount, Devise devise, Date dateOpe) {
-        this.personne = personne;
+    public Operation( BigDecimal amount, Devise devise, Date dateOpe) {
+
         this.amount = amount;
         this.devise = devise;
         this.dateOpe = dateOpe;
@@ -22,19 +22,11 @@ public class Operation {
     public Operation() {
     }
 
-    public Personne getPersonne() {
-        return personne;
-    }
-
-    public void setPersonne(Personne personne) {
-        this.personne = personne;
-    }
-
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -57,7 +49,6 @@ public class Operation {
     @Override
     public String toString() {
         return "Operation{" +
-                "personne=" + personne +
                 ", amount=" + amount +
                 ", devise=" + devise +
                 ", dateOpe=" + dateOpe +

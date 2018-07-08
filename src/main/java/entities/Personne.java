@@ -3,13 +3,14 @@ package entities;
 import java.util.ArrayList;
 
 public class Personne {
-    private String firstName;
-    private String lastName;
-    private String adress;
-    private City city;
-    private String phoneNumber;
-    private String portableNumber;
-    private Collel collel;
+    protected String firstName;
+    protected String lastName;
+    protected String adress;
+    protected City city;
+    protected String phoneNumber;
+    protected String portableNumber;
+    protected Collel collel;
+    protected Account account;
 
 
     public Personne(String firstName, String lastName, String adress, City city, String phoneNumber, String portableNumber, Collel collel) {
@@ -20,6 +21,8 @@ public class Personne {
         this.phoneNumber = phoneNumber;
         this.portableNumber = portableNumber;
         this.collel = collel;
+        this.account = new Account();
+
     }
 
     public Personne() {
@@ -83,4 +86,19 @@ public class Personne {
     }
 
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void depose(Depot depot) {
+        this.account.addDepot(depot);
+    }
+
+    public void emprunte(Emprunt emprunt){
+        this.account.addEmprunt(emprunt);
+    }
 }

@@ -2,17 +2,18 @@ package entities;
 
 import exceptions.RemboursementImpossibleException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Emprunt  extends  Operation{
     private Date dateEmprunt;
     private Date dateRemboursement;
-    private double resteAPayer;
+    private BigDecimal resteAPayer;
     private ArrayList<Arev> listArevim = new ArrayList<Arev>();
 
-    public Emprunt(Personne personne, double amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
-        super(personne,amount,devise,dateEmprunt);
+    public Emprunt( BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
+        super(amount,devise,dateEmprunt);
         this.dateEmprunt = dateEmprunt;
         this.dateRemboursement = dateRemboursement;
         this.resteAPayer = amount;
@@ -46,20 +47,6 @@ public class Emprunt  extends  Operation{
             this.listArevim.add(garant);
     }
 
-//    @Override
-//    public String toString() {
-//        return "Emprunt{" +
-//                "personne=" + personne +
-//                ", amount=" + amount +
-//                ", devise=" + devise +
-//                ", dateEmprunt=" + dateEmprunt +
-//                ", dateRemboursement=" + dateRemboursement +
-//                ", resteAPayer=" + resteAPayer +
-//                ", listArevim=" + listArevim +
-//                '}';
-//    }
-
-
     @Override
     public String toString() {
         return "Emprunt{" +
@@ -67,18 +54,17 @@ public class Emprunt  extends  Operation{
                 ", dateRemboursement=" + dateRemboursement +
                 ", resteAPayer=" + resteAPayer +
                 ", listArevim=" + listArevim +
-                ", personne=" + personne +
                 ", amount=" + amount +
                 ", devise=" + devise +
                 ", dateOpe=" + dateOpe +
                 '}';
     }
 
-    public double getResteAPayer() {
+    public BigDecimal getResteAPayer() {
         return resteAPayer;
     }
 
-    public void setResteAPayer(double resteAPayer) {
+    public void setResteAPayer(BigDecimal resteAPayer) {
         this.resteAPayer = resteAPayer;
     }
 
@@ -90,10 +76,10 @@ public class Emprunt  extends  Operation{
         this.listArevim = listArevim;
     }
 
-    public void rembourse(double amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException {
-        if(this.resteAPayer - amountRembourser < 0){
+    public void rembourse(BigDecimal amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException {
+        if(this.resteAPayer.subtract( amountRembourser).compareTo(BigDecimal.ZERO) < 0){
             throw new RemboursementImpossibleException();
         }
-        this.resteAPayer-= amountRembourser;
+        this.resteAPayer = this.resteAPayer.subtract(amountRembourser);
     }
 }
