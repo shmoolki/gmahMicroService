@@ -121,6 +121,21 @@ public class Personne {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Personne{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", adress='" + adress + '\'' +
+                ", city=" + city +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", portableNumber='" + portableNumber + '\'' +
+                ", collel=" + collel +
+                ", account=" + account +
+                ", id=" + id +
+                '}';
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

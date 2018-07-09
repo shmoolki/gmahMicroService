@@ -18,7 +18,7 @@ public class wave1Test {
 
     private City bneiBrakCity = new City("בני ברק", "ישראל");
     private Collel bismuthCollel = new Collel("זכרון אברהם יחזקאל", "רב ביסמוט",bneiBrakCity, "5445455");
-    private Lovei shmuelMouyalPersonne = new Lovei("מויאל", "שמואל", "בירנבוים 4", bneiBrakCity, "036786812", "0548413578", bismuthCollel);
+    private Lovei shmuelMouyalPersonne = new Lovei(12L,"מויאל", "שמואל", "בירנבוים 4", bneiBrakCity, "036786812", "0548413578", bismuthCollel);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
@@ -111,6 +111,7 @@ public class wave1Test {
         personne1.get().setFirstName("Kohen");
         personneRepository.save(personne1.get());
         assertEquals("Kohen",personneRepository.getById(1L).get().getFirstName() );
+        assertEquals(1 , personneRepository.all().size());
     }
 
     private Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {

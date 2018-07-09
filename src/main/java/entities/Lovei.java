@@ -12,6 +12,11 @@ public class Lovei extends Personne {
 
     public Lovei() {
     }
+
+    public Lovei(Long id, String firstName, String lastName, String adress, City city, String phoneNumber, String portableNumber, Collel collel) {
+        super(id, firstName, lastName, adress, city, phoneNumber, portableNumber, collel);
+    }
+
     public void takeGmah(Gmah gmah) {
         this.gmahEnCours.add(gmah);
     }

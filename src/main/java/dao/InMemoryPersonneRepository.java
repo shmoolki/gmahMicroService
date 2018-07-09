@@ -17,7 +17,18 @@ public class InMemoryPersonneRepository implements PersonneRepository {
 
     @Override
     public void save(Personne personne) {
-        personneArrayList.add(personne);
+        List<Personne> listPersonne =  personneArrayList.stream().filter(p -> p.getId() == personne.getId()).collect(Collectors.toList());
+        if(listPersonne.size() > 0) update(personne);
+        else personneArrayList.add(personne);
+        
+    }
+
+    private void update(Personne personne) {
+        personneArrayList.forEach(personne1 -> {
+            if(personne1.getId() == personne.getId()){
+                personne1 = personne;
+            }
+        });
     }
 
     @Override
