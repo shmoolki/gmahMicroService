@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -99,6 +100,17 @@ public class wave1Test {
         assertThat(personneRepository.all(), hasItem(personne));
         assertThat(personneRepository.all(), hasItem(shmuelMouyalPersonne));
 
+    }
+
+    @Test
+    public void handlePersonneUpdate(){
+        Personne personne = new Personne( 1L,"Cohen","David","Rue du test 26",bneiBrakCity,"039204","3238290334",null);
+        personneRepository.save(personne);
+        Optional<Personne> personne1 = personneRepository.getById(1L);
+        assertEquals(personne1.get(),personne);
+        personne1.get().setFirstName("Kohen");
+        personneRepository.save(personne1.get());
+        assertEquals("Kohen",personneRepository.getById(1L).get().getFirstName() );
     }
 
     private Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {

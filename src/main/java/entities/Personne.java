@@ -11,6 +11,7 @@ public class Personne {
     protected String portableNumber;
     protected Collel collel;
     protected Account account;
+    protected Long id;
 
 
     public Personne(String firstName, String lastName, String adress, City city, String phoneNumber, String portableNumber, Collel collel) {
@@ -27,6 +28,20 @@ public class Personne {
 
     public Personne() {
     }
+
+    public Personne(Long id, String firstName, String lastName, String adress, City city, String phoneNumber, String portableNumber, Collel collel) {
+        this.id  = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adress = adress;
+        this.city = city;
+        this.phoneNumber = phoneNumber;
+        this.portableNumber = portableNumber;
+        this.collel = collel;
+        this.account = new Account();
+
+    }
+
 
     public String getFirstName() {
 
@@ -100,5 +115,13 @@ public class Personne {
 
     public void emprunte(Emprunt emprunt){
         this.account.addEmprunt(emprunt);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
