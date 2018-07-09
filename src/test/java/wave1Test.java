@@ -1,7 +1,4 @@
-import dao.DepotRepository;
-import dao.EmpruntRepository;
-import dao.InMemoryDepotRepository;
-import dao.InMemoryEmpruntRepository;
+import dao.*;
 import entities.*;
 import exceptions.RemboursementImpossibleException;
 import org.junit.Test;
@@ -25,6 +22,7 @@ public class wave1Test {
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
     private DepotRepository depotRepository = new InMemoryDepotRepository();
+    private PersonneRepository personneRepository = new InMemoryPersonneRepository();
 
 
     @Test
@@ -93,6 +91,16 @@ public class wave1Test {
 
     }
 
+    @Test
+    public void handlePersonneCreate(){
+        Personne personne = new Personne("Cohen","David","Rue du test 26",bneiBrakCity,"039204","3238290334",null);
+        personneRepository.save(personne);
+        personneRepository.save(shmuelMouyalPersonne);
+        assertThat(personneRepository.all(), hasItem(personne));
+        assertThat(personneRepository.all(), hasItem(shmuelMouyalPersonne));
+
+    }
+
     private Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
         Emprunt emprunt = new Emprunt(amount,devise,dateEmprunt,dateRemboursement);
         personne.emprunte(emprunt);
@@ -105,6 +113,5 @@ public class wave1Test {
         shmuelMouyalPersonne.depose(depot);
         depotRepository.save(depot);
     }
-
 
 }
