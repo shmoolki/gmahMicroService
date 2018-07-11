@@ -38,4 +38,20 @@ public class InMemoryPersonneRepository implements PersonneRepository {
             return Optional.ofNullable(listPersonne.get(0));
         return null;
     }
+
+    @Override
+    public Optional<List<Personne>> getByMc(String mc) {
+        List<Personne> listPersonne;
+        listPersonne = personneArrayList.stream().filter(personne -> {
+//             Long.valueOf(mc).compareTo(personne.getId());
+            return ( personne.getFirstName().contains(mc));
+        }).collect(Collectors.toList());
+        if(listPersonne.size() > 0)
+            return Optional.of(listPersonne);
+
+
+            return Optional.empty();
+    }
+
+
 }
