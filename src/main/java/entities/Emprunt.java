@@ -1,6 +1,7 @@
 package entities;
 
 import exceptions.RemboursementImpossibleException;
+import exceptions.WrongCurrencyException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -76,10 +77,17 @@ public class Emprunt  extends  Operation{
         this.listArevim = listArevim;
     }
 
-    public void rembourse(BigDecimal amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException {
+    public void rembourse(BigDecimal amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException, WrongCurrencyException {
+        if(!devise.equals(this.devise)){
+            throw new WrongCurrencyException();
+        }
         if(this.resteAPayer.subtract( amountRembourser).compareTo(BigDecimal.ZERO) < 0){
             throw new RemboursementImpossibleException();
         }
         this.resteAPayer = this.resteAPayer.subtract(amountRembourser);
+    }
+
+    public boolean isInProgress() {
+        return ( this.resteAPayer.compareTo(BigDecimal.ZERO) > 0);
     }
 }

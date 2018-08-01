@@ -14,12 +14,6 @@ public class EmpruntService {
     }
 
     public ArrayList<Emprunt> getInProgress() {
-        Date todayDate = new Date();
-        List<Emprunt> listEmpInProg = this.empruntRepository.all().stream().filter(emprunt -> {
-            return (       emprunt.getDateEmprunt().before(todayDate)
-                        && emprunt.getDateRemboursement().after(todayDate)
-                    );
-        }).collect(Collectors.toList());
-        return new ArrayList<Emprunt>(listEmpInProg);
+        return empruntRepository.getInProgress();
     }
 }

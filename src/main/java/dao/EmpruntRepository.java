@@ -9,4 +9,6 @@ public interface EmpruntRepository {
     public ArrayList<Emprunt> all();
 
     public void save(Emprunt emprunt) ;
+
+    ArrayList<Emprunt> getInProgress();
 }

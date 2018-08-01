@@ -1,6 +1,7 @@
 import dao.*;
 import entities.*;
 import exceptions.RemboursementImpossibleException;
+import exceptions.WrongCurrencyException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class wave1Test {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
     private Devise euroDevise = new Devise("EUR" , "Euro" , "€");
+    private Devise shekelDevise = new Devise("ILS" , "Shekel" , "₪");
     private DepotRepository depotRepository = new InMemoryDepotRepository();
     private PersonneRepository personneRepository = new InMemoryPersonneRepository();
 
@@ -57,7 +59,7 @@ public class wave1Test {
     }
 
     @Test
-    public void RembourserUnEmprunt() throws ParseException, RemboursementImpossibleException {
+    public void RembourserUnEmprunt() throws ParseException, RemboursementImpossibleException, WrongCurrencyException {
         Arev garant = new Arev("Cohen","David","Birnbaum 4", bneiBrakCity,"343434","34343434",bismuthCollel);
         Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.addArev(garant);
@@ -70,10 +72,17 @@ public class wave1Test {
     }
 
     @Test(expected = RemboursementImpossibleException.class)
-    public void testRemboursementImpossible() throws ParseException, RemboursementImpossibleException {
+    public void testRemboursementImpossible() throws ParseException, RemboursementImpossibleException, WrongCurrencyException {
         Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         emprunt.rembourse(BigDecimal.valueOf(10001), euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
     }
+
+    @Test(expected = WrongCurrencyException.class)
+    public void shoulReturnExceptionIfRembDifferentDevise() throws ParseException, RemboursementImpossibleException, WrongCurrencyException {
+        Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        emprunt.rembourse(BigDecimal.valueOf(30000), shekelDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+    }
+
 
     @Test
     public void shouldHandleDepot() throws ParseException{

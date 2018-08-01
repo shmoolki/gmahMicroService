@@ -2,6 +2,8 @@
 
 import dao.*;
 import entities.*;
+import exceptions.RemboursementImpossibleException;
+import exceptions.WrongCurrencyException;
 import org.junit.Test;
 import services.EmpruntService;
 
@@ -56,6 +58,30 @@ public class appGmahAppTest {
         Emprunt emp2 = emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, dateFormat.parse("05/07/2017"), dateFormat.parse("05/10/2017"));
         assertEquals(empruntService.getInProgress().size(),1);
     }
+
+    @Test
+    public void shouldReturnTwoEmpruntWhenTwoEmpruntInProgress() throws ParseException {
+        Emprunt emprunt = emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        Emprunt emp2 = emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, dateFormat.parse("05/07/2017"), dateFormat.parse("05/10/2018"));
+        assertEquals(empruntService.getInProgress().size(),2);
+    }
+
+    @Test
+    public void shouldReturnTwoEmpruntInProgressWhenBeginToday() throws ParseException {
+        Emprunt emprunt = emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, new Date(), dateFormat.parse("01/10/2018"));
+        Emprunt emp2 = emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, new Date(), dateFormat.parse("05/10/2018"));
+        assertEquals(empruntService.getInProgress().size(),2);
+    }
+
+    @Test
+    public void shouldReturnFalseWhenDateInProgressButUntillPayed() throws ParseException, RemboursementImpossibleException, WrongCurrencyException {
+        Emprunt emprunt = emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, new Date(), dateFormat.parse("01/10/2018"));
+        Emprunt emp2 = emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, new Date(), dateFormat.parse("05/10/2018"));
+        emprunt.rembourse(BigDecimal.valueOf(10000), shekelDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+        assertEquals(emprunt.isInProgress(),false);
+    }
+
+
 
     public Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
         Emprunt emprunt = new Emprunt(amount,devise,dateEmprunt,dateRemboursement);
