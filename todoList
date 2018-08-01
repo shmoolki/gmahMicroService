@@ -1,2 +1,40 @@
 TODO: 1- Une personne possede un compte
 TODO  2- Ce compte contient des operations
+
+Liste des actions a gerer:
+    - Ecran d'acceuil:
+        1 -
+    - Consulter la liste des personnes
+        - Filtres : 1- Nom
+                    2- Prenom
+                    3- adresse
+                    4- Ville
+                    5-Kollel
+                    6-Tranches de dates Emprunts
+                    7-Tranches de dates Remboursement
+                    8-Montant emprunté
+                    9-Par devise enprunter
+                    10-Emprunt en cours
+                    11- Montant emprunt en cours superieur ou inferieur à
+                    12- Situation Garants
+    - Consulter une personne
+    - Modifier une personne
+    - Creer une personne
+    - Supprimer ou desactiver une personne
+    - Merger une personne:
+        - Verification des garantis et Merge
+        - Verification des emprunts et Merge
+        - Signaler les incoherences: (Proposer solution)
+            - Solution 1: Cocher les lignes a reimpacter
+            - Solution 2: Faire le merge en reaffectsant tout
+    - Consulter liste des emprunts
+        - Filtres : 1- Filtres pour personnes
+                    2- Devise
+                    3- Status remboursé ou encours
+                    4- Paiement direct ou echelloné
+                    5-....
+    - Consulter les Depots
+        - Filtres : 1- Filtres pour personnes
+                    2- Devise
+                    3- Status remboursé ou encours
+

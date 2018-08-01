@@ -71,8 +71,8 @@ public class wave1Test {
 
     @Test(expected = RemboursementImpossibleException.class)
     public void testRemboursementImpossible() throws ParseException, RemboursementImpossibleException {
-            Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
-            emprunt.rembourse(BigDecimal.valueOf(10001), euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
+        Emprunt emprunt = emprunter(shmuelMouyalPersonne, BigDecimal.valueOf(10000), euroDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
+        emprunt.rembourse(BigDecimal.valueOf(10001), euroDevise , dateFormat.parse("01/10/2018"), "Remboursement a temps");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class wave1Test {
 
     }
 
-    private Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
+    public Emprunt emprunter(Personne personne, BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
         Emprunt emprunt = new Emprunt(amount,devise,dateEmprunt,dateRemboursement);
         personne.emprunte(emprunt);
         empruntRepository.save(emprunt);
