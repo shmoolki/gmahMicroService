@@ -52,7 +52,7 @@ public class appGmahAppTest {
     }
     @Test
     public void shouldReturnOneEmpruntWhenTwoEmpruntButOneInProgress() throws ParseException {
-        Emprunt emprunt = emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, dateFormat.parse("01/07/2019"), dateFormat.parse("01/10/2018"));
+        Emprunt emprunt = emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"));
         Emprunt emp2 = emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, dateFormat.parse("05/07/2017"), dateFormat.parse("05/10/2017"));
         assertEquals(empruntService.getInProgress().size(),1);
     }
