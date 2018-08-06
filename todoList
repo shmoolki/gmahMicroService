@@ -38,3 +38,10 @@ Liste des actions a gerer:
                     2- Devise
                     3- Status remboursé ou encours
 
+#Api de l'application necessaire
+GET     api/emprunt/count   ==> Nbre d'emprunt en cours , Somme total, Details par Devise
+GET     api/personnes       ==> Liste des personnes avec leurs infos
+GET     api/personne/{id}   ==> Fiche personnes
+POST    api/personnes       ==> creation d'ine personne
+
+
