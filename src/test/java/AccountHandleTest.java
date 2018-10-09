@@ -1,5 +1,6 @@
 import dao.*;
 import entities.*;
+import exceptions.RetraitImpossibleException;
 import org.junit.Test;
 import services.EmpruntService;
 
@@ -44,12 +45,28 @@ public class AccountHandleTest
     }
 
     @Test
-    public void shouldReturn1000Emprunt1000DepotWhen1000Emprunt2000Depot1000Retrait() throws ParseException {
-        Emprunt emprunt = FunctionForTest.emprunter(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"),personneRepository, empruntRepository);
+    public void shouldReturn1000DepotWhen2000Depot1000Retrait() throws ParseException, RetraitImpossibleException {
         Depot depot = FunctionForTest.deposer(shmuelPersonne, BigDecimal.valueOf(2000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, depotRepository);
         Retrait retrait = FunctionForTest.retirer(shmuelPersonne,BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, retraitRepository);
-        assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getEmpruntAmount());
         assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getDepotAmount());
+    }
+
+    @Test
+    public void shouldReturn0DepotWhen1000Depot1000Retrait() throws ParseException, RetraitImpossibleException {
+        Depot depot = FunctionForTest.deposer(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, depotRepository);
+        Retrait retrait = FunctionForTest.retirer(shmuelPersonne,BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, retraitRepository);
+        assertEquals(BigDecimal.ZERO,shmuelPersonne.getAccount().getDepotAmount());
+    }
+
+    @Test( expected =  RetraitImpossibleException.class)
+    public void shouldReturnErrorWhen0Depot1000Retrait() throws ParseException, RetraitImpossibleException {
+        Retrait retrait = FunctionForTest.retirer(shmuelPersonne,BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, retraitRepository);
+    }
+
+    @Test( expected =  RetraitImpossibleException.class)
+    public void shouldReturnErrorWhen1000Depot2000Retrait() throws ParseException, RetraitImpossibleException {
+        Depot depot = FunctionForTest.deposer(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, depotRepository);
+        Retrait retrait = FunctionForTest.retirer(shmuelPersonne,BigDecimal.valueOf(2000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, retraitRepository);
     }
 
 

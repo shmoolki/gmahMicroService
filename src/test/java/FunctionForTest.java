@@ -3,6 +3,7 @@ import dao.EmpruntRepository;
 import dao.PersonneRepository;
 import dao.RetraitRepository;
 import entities.*;
+import exceptions.RetraitImpossibleException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +26,7 @@ public   class FunctionForTest
         return depot;
     }
 
-    public static Retrait retirer(Personne personne, BigDecimal amount, Devise devise, Date dateRetrait , PersonneRepository personneRepository, RetraitRepository retraitRepository) {
+    public static Retrait retirer(Personne personne, BigDecimal amount, Devise devise, Date dateRetrait , PersonneRepository personneRepository, RetraitRepository retraitRepository) throws RetraitImpossibleException {
         Retrait retrait = new Retrait(amount,devise,dateRetrait);
         personne.retire(retrait);
         personneRepository.save(personne);

@@ -1,5 +1,8 @@
 package entities;
 
+import exceptions.RetraitImpossibleException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Personne {
@@ -140,7 +143,10 @@ public class Personne {
         this.id = id;
     }
 
-    public void retire(Retrait retrait) {
+    public void retire(Retrait retrait) throws  RetraitImpossibleException {
+        if (this.account.getDepotAmount().compareTo( retrait.getAmount() ) == -1 ){
+            throw new RetraitImpossibleException();
+        }
         this.account.addRetrait(retrait);
     }
 }
