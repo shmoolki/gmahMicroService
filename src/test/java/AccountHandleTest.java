@@ -1,7 +1,4 @@
-import dao.EmpruntRepository;
-import dao.InMemoryEmpruntRepository;
-import dao.InMemoryPersonneRepository;
-import dao.PersonneRepository;
+import dao.*;
 import entities.*;
 import org.junit.Test;
 import services.EmpruntService;
@@ -19,6 +16,8 @@ public class AccountHandleTest
     private Lovei shmuelPersonne = new Lovei(12L,"מויאל", "שמואל", "בירנבוים 4", bneiBrakCity, "036786812", "0548413578", bismuthCollel);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private EmpruntRepository empruntRepository = new InMemoryEmpruntRepository();
+    private DepotRepository depotRepository = new InMemoryDepotRepository();
+    private RetraitRepository retraitRepository = new InMemoryRetraitRepository();
     private Devise shekelDevise = new Devise("ILS" , "Shekel" , "₪");
     private PersonneRepository personneRepository = new InMemoryPersonneRepository();
     private EmpruntService empruntService = new EmpruntService(empruntRepository);
@@ -35,5 +34,23 @@ public class AccountHandleTest
         assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getEmpruntAmount());
         assertEquals(BigDecimal.ZERO,shmuelPersonne.getAccount().getDepotAmount());
     }
+
+    @Test
+    public void shouldReturn1000Emprunt1000DepotWhen1000Emprunt1000Depot() throws ParseException {
+        Emprunt emprunt = FunctionForTest.emprunter(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"),personneRepository, empruntRepository);
+        Depot depot = FunctionForTest.deposer(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, depotRepository);
+        assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getEmpruntAmount());
+        assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getDepotAmount());
+    }
+
+    @Test
+    public void shouldReturn1000Emprunt1000DepotWhen1000Emprunt2000Depot1000Retrait() throws ParseException {
+        Emprunt emprunt = FunctionForTest.emprunter(shmuelPersonne, BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"),personneRepository, empruntRepository);
+        Depot depot = FunctionForTest.deposer(shmuelPersonne, BigDecimal.valueOf(2000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, depotRepository);
+        Retrait retrait = FunctionForTest.retirer(shmuelPersonne,BigDecimal.valueOf(1000), shekelDevise, dateFormat.parse("01/07/2018"),personneRepository, retraitRepository);
+        assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getEmpruntAmount());
+        assertEquals(BigDecimal.valueOf(1000),shmuelPersonne.getAccount().getDepotAmount());
+    }
+
 
 }

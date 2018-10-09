@@ -139,4 +139,8 @@ public class Personne {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void retire(Retrait retrait) {
+        this.account.addRetrait(retrait);
+    }
 }

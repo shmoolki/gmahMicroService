@@ -10,6 +10,7 @@ import services.EmpruntService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static junit.framework.TestCase.assertEquals;
@@ -54,6 +55,7 @@ public class appGmahAppTest {
     }
     @Test
     public void shouldReturnOneEmpruntWhenTwoEmpruntButOneInProgress() throws ParseException {
+        LocalDate dateNow = LocalDate.now().plusMonths(3);
         Emprunt emprunt = FunctionForTest.emprunter(shmuelPersonne, BigDecimal.valueOf(10000), shekelDevise, dateFormat.parse("01/07/2018"), dateFormat.parse("01/10/2018"),personneRepository, empruntRepository);
         Emprunt emp2 = FunctionForTest.emprunter(shmuelPersonne, BigDecimal.valueOf(20000), shekelDevise, dateFormat.parse("05/07/2017"), dateFormat.parse("05/10/2017"),personneRepository, empruntRepository);
         assertEquals(empruntService.getInProgress().size(),1);

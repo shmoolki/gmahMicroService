@@ -34,4 +34,8 @@ public class Account {
     public void addEmprunt(Emprunt emprunt) {
         this.empruntAmount = this.empruntAmount.add(emprunt.amount);
     }
+
+    public void addRetrait(Retrait retrait) {
+        this.depotAmount = this.depotAmount.subtract(retrait.amount);
+    }
 }
