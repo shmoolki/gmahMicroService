@@ -4,16 +4,17 @@ import exceptions.RemboursementImpossibleException;
 import exceptions.WrongCurrencyException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Emprunt  extends  Operation{
-    private Date dateEmprunt;
-    private Date dateRemboursement;
+    private LocalDate dateEmprunt;
+    private LocalDate dateRemboursement;
     private BigDecimal resteAPayer;
     private ArrayList<Arev> listArevim = new ArrayList<Arev>();
 
-    public Emprunt( BigDecimal amount, Devise devise, Date dateEmprunt, Date dateRemboursement) {
+    public Emprunt( BigDecimal amount, Devise devise, LocalDate dateEmprunt, LocalDate dateRemboursement) {
         super(amount,devise,dateEmprunt);
         this.dateEmprunt = dateEmprunt;
         this.dateRemboursement = dateRemboursement;
@@ -27,19 +28,19 @@ public class Emprunt  extends  Operation{
         super();
     }
 
-    public Date getDateEmprunt() {
+    public LocalDate getDateEmprunt() {
         return dateEmprunt;
     }
 
-    public void setDateEmprunt(Date dateEmprunt) {
+    public void setDateEmprunt(LocalDate dateEmprunt) {
         this.dateEmprunt = dateEmprunt;
     }
 
-    public Date getDateRemboursement() {
+    public LocalDate getDateRemboursement() {
         return dateRemboursement;
     }
 
-    public void setDateRemboursement(Date dateRemboursement) {
+    public void setDateRemboursement(LocalDate dateRemboursement) {
         this.dateRemboursement = dateRemboursement;
     }
 
@@ -77,7 +78,7 @@ public class Emprunt  extends  Operation{
         this.listArevim = listArevim;
     }
 
-    public void rembourse(BigDecimal amountRembourser, Devise devise, Date dateRemboursement, String comment) throws RemboursementImpossibleException, WrongCurrencyException {
+    public void rembourse(BigDecimal amountRembourser, Devise devise, LocalDate dateRemboursement, String comment) throws RemboursementImpossibleException, WrongCurrencyException {
         if(!devise.equals(this.devise)){
             throw new WrongCurrencyException();
         }

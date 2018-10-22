@@ -3,15 +3,16 @@ package entities;
 import exceptions.RemboursementImpossibleException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Operation {
     protected BigDecimal amount;
     protected Devise devise;
-    protected Date dateOpe;
+    protected LocalDate dateOpe;
 
-    public Operation( BigDecimal amount, Devise devise, Date dateOpe) {
+    public Operation( BigDecimal amount, Devise devise, LocalDate dateOpe) {
 
         this.amount = amount;
         this.devise = devise;
@@ -38,11 +39,11 @@ public class Operation {
         this.devise = devise;
     }
 
-    public Date getDateOpe() {
+    public LocalDate getDateOpe() {
         return dateOpe;
     }
 
-    public void setDateOpe(Date dateOpe) {
+    public void setDateOpe(LocalDate dateOpe) {
         this.dateOpe = dateOpe;
     }
 

@@ -2,6 +2,7 @@ package dao;
 
 import entities.Emprunt;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,11 +23,11 @@ public class InMemoryEmpruntRepository implements EmpruntRepository {
 
     @Override
     public ArrayList<Emprunt> getInProgress() {
-        Date todayDate = new Date();
+        LocalDate todayDate = LocalDate.now();
         List<Emprunt> listEmpInProg = empruntArrayList.stream().filter(emprunt -> {
             return (
-                    ( emprunt.getDateEmprunt().before(todayDate) || emprunt.getDateEmprunt().equals(todayDate))
-                            && (emprunt.getDateRemboursement().after(todayDate) || emprunt.getDateRemboursement().equals(todayDate))
+                    ( emprunt.getDateEmprunt().isBefore(todayDate) || emprunt.getDateEmprunt().equals(todayDate))
+                            && (emprunt.getDateRemboursement().isAfter(todayDate) || emprunt.getDateRemboursement().equals(todayDate))
             );
         }).collect(Collectors.toList());
         return new ArrayList<Emprunt>(listEmpInProg);

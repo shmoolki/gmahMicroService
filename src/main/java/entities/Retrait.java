@@ -1,11 +1,12 @@
 package entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Retrait extends  Operation{
-    private Date datRetrait;
-    public Retrait(BigDecimal amount, Devise devise, Date dateRetrait) {
+    private LocalDate datRetrait;
+    public Retrait(BigDecimal amount, Devise devise, LocalDate dateRetrait) {
         super( amount, devise, dateRetrait);
         this.datRetrait = dateRetrait;
     }

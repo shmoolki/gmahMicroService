@@ -1,11 +1,12 @@
 package entities;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Depot extends Operation {
-    private Date dateDepot;
-    public Depot(BigDecimal amount, Devise devise, Date dateDepot) {
+    private LocalDate dateDepot;
+    public Depot(BigDecimal amount, Devise devise, LocalDate dateDepot) {
         super( amount, devise, dateDepot);
         this.dateDepot = dateDepot;
     }
